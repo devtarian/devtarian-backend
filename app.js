@@ -16,6 +16,6 @@ app.use("/uploads", express.static(path.resolve(__dirname, "uploads")));
 // [ Routes ]
 app.use(require("./routes"));
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
     console.log("express listening on port", port);
 });
