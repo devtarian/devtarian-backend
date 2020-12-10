@@ -23,6 +23,7 @@ db.sequelize
     .catch((err) => {
         console.error("Unable to connect to the database:", err);
     });
+
 // [ Middleware ]
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

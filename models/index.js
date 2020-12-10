@@ -1,13 +1,24 @@
 let Sequelize = require("sequelize");
 let path = require("path");
 let fs = require("fs");
+// let { Client } = require("pg");
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    logging: false,
+// const client = new Client({
+//     connectionString: process.env.HEROKU_POSTGRESQL_BRONZE_URL,
+//     ssl: {
+//         rejectUnauthorized: false,
+//     },
+// });
+// client.connect();
+
+const sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
+    dialect: "postgres",
+    protocol: "postgres",
+    port: 5432,
     dialectOptions: {
         ssl: {
-            require: true,
-            rejectUnauthorized: false,
+            require: true, // This will help you. But you will see nwe error
+            rejectUnauthorized: false, // This line will fix new error
         },
     },
 });
