@@ -4,14 +4,14 @@ let fs = require("fs");
 // let { Client } = require("pg");
 
 // const client = new Client({
-//     connectionString: process.env.HEROKU_POSTGRESQL_BRONZE_URL,
+//     connectionString: process.env.HEROKU_POSTGRESQL_MAROON_URL,
 //     ssl: {
 //         rejectUnauthorized: false,
 //     },
 // });
 // client.connect();
 
-const sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
+const sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_MAROON_URL, {
     dialect: "postgres",
     protocol: "postgres",
     port: 5432,
