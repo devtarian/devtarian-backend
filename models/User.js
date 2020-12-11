@@ -33,10 +33,5 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue:
                 "https://res.cloudinary.com/douy56nkf/image/upload/v1594060920/defaults/txxeacnh3vanuhsemfc8.png",
         },
-        cover: {
-            type: DataTypes.STRING,
-            defaultValue:
-                "https://res.cloudinary.com/douy56nkf/image/upload/v1594060919/defaults/xcdnczly5nuwpibolagv.png",
-        },
     });
 };
