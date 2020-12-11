@@ -9,6 +9,12 @@ const db = require("./models");
 const app = express();
 const port = 8000;
 
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
+// Initialize swagger-jsdoc -> returns validated swagger spec in json format
+const swaggerSpec = swaggerJSDoc(require("./routes/swagger"));
+
 // [ DB ]
 db.sequelize
     .authenticate()
@@ -23,6 +29,8 @@ db.sequelize
     .catch((err) => {
         console.error("Unable to connect to the database:", err);
     });
+// [ Swagger ]
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // [ Middleware ]
 app.use(bodyParser.json());
