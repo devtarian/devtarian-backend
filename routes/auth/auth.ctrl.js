@@ -37,7 +37,6 @@ exports.signIn = async (req, res) => {
 
 exports.signUp = async (req, res) => {
     try {
-        console.log(req.body);
         const { email } = req.body;
         const user = await User.findOne({
             where: { email },
@@ -58,7 +57,7 @@ exports.signUp = async (req, res) => {
     } catch (e) {
         console.log(e);
         res.status(500).json({
-            error: "500 서버에러",
+            error: e,
         });
     }
 };
