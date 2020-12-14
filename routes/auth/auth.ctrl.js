@@ -23,12 +23,22 @@ exports.signIn = async (req, res) => {
                 .status(400)
                 .json({ error: "비밀번호가 일치하지 않습니다." });
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRE,
-        });
-        res.status(200).json({ token });
+        const accessToken = jwt.sign(
+            { email: user.email },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1h",
+            }
+        );
+        const refreshToken = jwt.sign(
+            { email: user.email },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: process.env.JWT_EXPIRE,
+            }
+        );
+        res.status(200).json({ accessToken, refreshToken });
     } catch (e) {
-        console.log(e);
         res.status(500).json({
             error: "500 서버에러",
         });
@@ -55,9 +65,45 @@ exports.signUp = async (req, res) => {
 
         res.status(200).json({ message: "success" });
     } catch (e) {
-        console.log(e);
         res.status(500).json({
             error: e,
         });
+    }
+};
+
+exports.token = async (req, res) => {
+    try {
+        const refreshToken = req.body.refreshToken;
+        const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+        const user = await User.findOne({
+            where: {
+                email: decoded.email,
+            },
+        });
+
+        const newAccessToken = jwt.sign(
+            { email: user.email },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1h",
+            }
+        );
+        const newRefreshToken = jwt.sign(
+            { email: user.email },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: process.env.JWT_EXPIRE,
+            }
+        );
+        user
+            ? res.status(200).json({
+                  accessToken: newAccessToken,
+                  refreshToken: newRefreshToken,
+              })
+            : res.status(500).json({ error: "다시 로그인해주세요" });
+    } catch (e) {
+        e.message === "jwt expired"
+            ? res.status(500).json({ error: "다시 로그인해주세요" })
+            : res.status(500).json({ error: "Interval Server Error" });
     }
 };
